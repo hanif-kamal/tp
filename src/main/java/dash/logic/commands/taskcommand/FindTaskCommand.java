@@ -22,24 +22,15 @@ import dash.model.task.TaskDate;
 
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
+ * Finds and lists all tasks in the task list which match all of the given arguments.
  * Keyword matching is case insensitive.
  */
 public class FindTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all tasks whose description contain all of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters Type 1 (find by description): DESCRIPTION\n"
-            + "Parameters Type 2 (find by field): "
-            + "[" + CliSyntax.PREFIX_TASK_DESCRIPTION + "DESCRIPTION] "
-            + "[" + CliSyntax.PREFIX_TAG + "TAG]... (at least 1) "
-            + "[" + CliSyntax.PREFIX_TASK_DATE + "DATE] "
-            + "[" + CliSyntax.PREFIX_TASK_DATE + "TIME] "
-            + "[" + CliSyntax.PREFIX_TASK_DATE + "DATE, TIME] "
-            + "[" + CliSyntax.PREFIX_PERSON + "PERSON] "
-            + "[" + CliSyntax.PREFIX_COMPLETION_STATUS + "TRUE/FALSE]\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds and lists all tasks whose fields match all of "
+            + "the specified arguments (case-insensitive). For more information, you may refer to the help tab.\n"
             + "Example 1: " + COMMAND_WORD + " CS2103T Homework\n"
             + "Example 2: " + COMMAND_WORD + " " + CliSyntax.PREFIX_TAG + "Groupwork\n";
 

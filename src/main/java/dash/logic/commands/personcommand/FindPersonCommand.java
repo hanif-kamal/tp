@@ -20,28 +20,16 @@ import dash.model.person.PhoneContainsKeywordsPredicate;
 import dash.model.person.TagPersonContainsKeywordsPredicate;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
+ * Finds and lists all persons in address book which match all of the given arguments.
  * Keyword matching is case insensitive.
  */
 public class FindPersonCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain all of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters Type 1 (find by name): NAME\n"
-            + "Parameters Type 2 (find by field): "
-            + "[" + CliSyntax.PREFIX_NAME + "NAME] "
-            + "[" + CliSyntax.PREFIX_PHONE + "PHONE] "
-            + "[" + CliSyntax.PREFIX_EMAIL + "EMAIL] "
-            + "[" + CliSyntax.PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + CliSyntax.PREFIX_TAG + "TAG]... (at least 1)\n"
-            + "Parameters Type 3 (find by both): NAME "
-            + "[" + CliSyntax.PREFIX_PHONE + "PHONE] "
-            + "[" + CliSyntax.PREFIX_EMAIL + "EMAIL] "
-            + "[" + CliSyntax.PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + CliSyntax.PREFIX_TAG + "TAG]... (at least 1)\n"
-            + "Example 1: " + COMMAND_WORD + " alice bob charlie\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds and lists all contacts whose fields match all "
+            + "of the specified arguments (case-insensitive). For more information, you may refer to the help tab.\n"
+            + "Example 1: " + COMMAND_WORD + " alice\n"
             + "Example 2: " + COMMAND_WORD + " [" + CliSyntax.PREFIX_PHONE + "91234567] " + "[" + CliSyntax.PREFIX_EMAIL
             + "johndoe@example.com]\n"
             + "Example 3: " + COMMAND_WORD + " Bob " + "[" + CliSyntax.PREFIX_PHONE + "91234567]\n";
