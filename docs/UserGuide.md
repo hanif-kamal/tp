@@ -338,7 +338,7 @@ This command is **irreversible** and your contact list will be **permanently** d
 **:warning: Command behaviour:**
 Make sure you switch to the Tasks tab before using these commands! They will not work otherwise.
 
-##### :information_source: Notes on the Contacts panel:
+**:information_source: Notes on the Contacts panel:** {#notes-contacts-panel}
 On the Tasks tab, there is a Contacts panel on the right that shows a simplified view of your Contacts tab. If you 
 filtered your contacts by using the _Find_ command before switching to the Tasks tab, the Contacts panel shows the same 
 filtered contact list. In this way, if you have a lot of contacts, you can maintain a focused view of the current people
@@ -363,12 +363,12 @@ The above screenshot shows how you can use the _Add_ command to add a task with 
 
 :scroll: Notes:
 * An explanation of how Date and Time formats work can be found 
-  [here](#informationsource-notes-about-specifying-date-and-time).
+  [here](#notes-date-time).
 * If you want to assign people to the task, the people to be assigned to the task (assignees) are specified with
   `PERSON_INDEX`.  
   * You can assign multiple people to the same task at once.
   * The `PERSON_INDEX` refers to the position of the person in the
-    [Contacts panel](#informationsource-notes-on-the-contacts-panel) as indicated by the number next to their name.
+    [Contacts panel](#notes-contacts-panel) as indicated by the number next to their name.
   * Any specified `PERSON_INDEX` must be a positive integer (1, 2, 3,...).
 
 --------------------------------------------------------------------------------------------------------------------
@@ -393,11 +393,11 @@ The above screenshot shows how the _Edit_ command can be used to edit the date/t
 * When editing tags, the existing tags of the contact will be removed i.e. adding of tags is not cumulative.
   * To add tags without removing existing tags, refer to the Tag command in the [next section](#tagging-a-task-tag).
 * An explanation of how Date and Time formats work can be found 
-  [here](#informationsource-notes-about-specifying-date-and-time).
+  [here](#notes-date-time).
 * If you want to modify the assignees of the task, new assignees are specified with `PERSON_INDEX`.
   * You can assign multiple people to the same task at once.
   * The `PERSON_INDEX` refers to the position of the person in the 
-    [Contacts panel](#informationsource-notes-on-the-contacts-panel) as indicated by the number next to their name.
+    [Contacts panel](#notes-contacts-panel) as indicated by the number next to their name.
   * Any specified `PERSON_INDEX` must be a positive integer (1, 2, 3,...).
 
 <div markdown="block" class="alert alert-info">
@@ -449,7 +449,7 @@ by 23:59".
   * The `INDEX` refers to the position of the task in the displayed task list as indicated by the number next to its 
     description.
   * The `PERSON_INDEX` refers to the position of the person in the
-    [Contacts panel](#informationsource-notes-on-the-contacts-panel) as indicated by the number next to their name.  
+    [Contacts panel](#notes-contacts-panel) as indicated by the number next to their name.  
   * The `INDEX` and `PERSON_INDEX` must be positive integers (1, 2, 3,...).
   
 --------------------------------------------------------------------------------------------------------------------
@@ -536,7 +536,7 @@ In this example, it was 25 October 2021, 09:16 PM.
 * Upcoming tasks will be listed in chronological order.
 * The current Date/Time is determined locally by your system clock.
 * An explanation of how Date and Time formats work can be found 
-  [here](#informationsource-notes-about-specifying-date-and-time).
+  [here](#notes-date-time).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -576,7 +576,7 @@ This command is **irreversible** and your task list will be **permanently** dele
 
 <div markdown="block" class="alert alert-info">
 
-##### :information_source: Notes about specifying date and time:
+**:information_source: Notes about specifying date and time:** {#notes-date-time}
 A task can optionally have a Date, or both a Date and a Time.
 
 `add [dt/DATE] [dt/TIME] [dt/DATE, TIME]`
