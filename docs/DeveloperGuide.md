@@ -324,23 +324,33 @@ The following activity diagram summarises what happens when a user executes an a
 With the implementation of `TaskDate.java`, we can easily look up upcoming tasks by comparing dates and times.
 
 #### Implementation
-In `UpcomingTaskCommand.java`, a field of type `Predicate<Task>` named `TaskDateAfterCurrentDatePredicate` is used to encapsulate the logic of determining whether or not a task is upcoming. It contains fields that store the current date and time via `LocalDateTime.now()`, and the current date via `LocalDate.now()`.
-The overridden `Predicate#test(Task task)` method first checks if the `task.TaskDate` object has a date, then if it has a date but no time, and finally whether it has both date and time.
+In `UpcomingTaskCommand.java`, a field of type `Predicate<Task>` named `TaskDateAfterCurrentDatePredicate` is used to 
+encapsulate the logic of determining whether or not a task is upcoming. It contains fields that store the current date 
+and time via `LocalDateTime.now()`, and the current date via `LocalDate.now()`. The overridden 
+`Predicate#test(Task task)` method first filters out completed tasks. It then checks if the `task.TaskDate` object has 
+a date, then if it has a date but no time, and finally whether it has both date and time.
 
-When `UpcomingTaskCommand.execute(Model model)` is called by `LogicManager`, `UpcomingTaskCommand` passes `TaskDateAfterCurrentDatePredicate` to `Model#updateFilteredTaskList(Predicate<Task> predicate)`, which filters out the upcoming tasks and updates the viewable `ObservableList<Task>`. 
+When `UpcomingTaskCommand.execute(Model model)` is called by `LogicManager`, 
+`Model#sortTaskList()` is called which sorts the task list chronologically. `UpcomingTaskCommand` then passes 
+`TaskDateAfterCurrentDatePredicate` to `Model#updateFilteredTaskList(Predicate<Task> predicate)`, which filters out the
+upcoming tasks and updates the viewable `ObservableList<Task>`. 
+
+The user is then able to view their upcoming tasks, in chronological order.
 
 A sequence diagram is provided below:
 ![UpcomingTaskCommandSequenceDiagram](images/UpcomingTaskCommandSequenceDiagram.png)
 
-#### Proposed Extension
-Currently, `UpcomingTaskCommand` returns upcoming tasks in the same order that they are listed in the original task list. They are not sorted by date. A proposed extension would be to implement a new method that iterates through the filtered list and sorts the tasks by date after `Model#updateFilteredTaskList` is called since it simply filters the list with the predicate.
-
-#### Alternatives Considered
-* Changing the syntax of the `upcoming` command to include a number i.e. `upcoming 7` to indicate upcoming tasks in the next 7 days.
+#### Alternative Considered and Design Considerations
+* Changing the syntax of the `upcoming` command to include a number i.e. `upcoming 7` to indicate upcoming tasks in the 
+  next 7 days.
   * Pros: More specific, limits the scope of viewable tasks which would help usability.
   * Cons: Not immediately clear what unit of time the number would represent. 
-    On one hand, it would be too limiting if we as developers decided the unit of time, and on the other hand it would be too clunky to have the user define it themselves. 
-    Implementing the proposed extension of sorting upcoming tasks would better address the issue. Additionally, having unnecessarily longer syntax would decrease the speed at which the user would be able to operate, which goes against Dash's primary design goal of prioritizing speed.
+    On one hand, it would be too limiting if we as developers decided the unit of time, and on the other hand it would 
+    be too clunky to have the user define it themselves. 
+    
+  * Conclusion: It was decided that implementing sort functionality into the `upcoming` command would sufficiently 
+    improve its usability, without imposing unnecessarily longer syntax upon the user, which would decrease the speed at
+    which they would be able to operate. This would go against Dash's primary design goal of prioritizing speed.
     
 
 ### \[Implemented\] Using the Up/Down Arrow Keys to Select Previous User Inputs (Joshua)
