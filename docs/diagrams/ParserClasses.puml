@@ -6,33 +6,31 @@ skinparam classBackgroundColor LOGIC_COLOR
 
 Class "{abstract}\nCommand" as Command
 Class XYZCommand
+Class ABCCommand
 
 package "Parser classes"{
 Interface Parser <<Interface>>
-Class AddressBookParser
+Interface ParserRequiringPersonList <<Interface>>
+Class ContactsTabParser
 Class XYZCommandParser
-Class CliSyntax
-Class ParserUtil
-Class ArgumentMultimap
-Class ArgumentTokenizer
-Class Prefix
+Class ABCCommandParser
 }
 
 Class HiddenOutside #FFFFFF
-HiddenOutside ..> AddressBookParser
+HiddenOutside ..> ContactsTabParser
 
-AddressBookParser .down.> XYZCommandParser: creates >
+ContactsTabParser .down.> XYZCommandParser: creates >
+ContactsTabParser .down.> ABCCommandParser: creates >
 
-XYZCommandParser ..> XYZCommand : creates >
-AddressBookParser ..> Command : returns >
-XYZCommandParser .up.|> Parser
-XYZCommandParser ..> ArgumentMultimap
-XYZCommandParser ..> ArgumentTokenizer
-ArgumentTokenizer .left.> ArgumentMultimap
-XYZCommandParser ..> CliSyntax
-CliSyntax ..> Prefix
-XYZCommandParser ..> ParserUtil
-ParserUtil .down.> Prefix
-ArgumentTokenizer .down.> Prefix
+XYZCommandParser .right.> XYZCommand : creates >
+ABCCommandParser .right.> ABCCommand : creates >
+ContactsTabParser .right.> Command : returns >
+XYZCommandParser .right.|> Parser
+ParserRequiringPersonList -up-|> Parser
+ABCCommandParser .up.|> ParserRequiringPersonList
 XYZCommand -up-|> Command
+ABCCommand -up-|> Command
+note right of ABCCommandParser: ABCCommandParser = Parsers that require \naccess to the person list\nAssignPersonCommand, EditTaskCommand, etc
+
+
 @enduml

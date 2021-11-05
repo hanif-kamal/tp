@@ -503,12 +503,14 @@ you can use the _Find_ command.
 
 :camera: The above screenshot shows how the _Find_ command can be used to search for all tasks marked "07:00 PM".
 
-:page_with_curl: Format: `find [d/DESCRIPTION] [dt/DATE] [dt/TIME] [dt/DATE, TIME] [p/PERSON_INDEX]... [t/TAG]...`
+:page_with_curl: Format: `find [d/DESCRIPTION] [dt/DATE] [dt/TIME] [dt/DATE, TIME] [c/COMPLETION_STATUS] 
+[p/PERSON_INDEX]... [t/TAG]...`
 
 :scroll: Notes:
 * The search is case-insensitive. e.g `find t/HOMEWORK` will match the `homework` tag.
 * The order of the keywords does not matter. e.g. `find d/lectures ST` will match `ST Lectures`.
 * At least one of the fields must be present.
+* `COMPLETION_STATUS` must be either `true` (for completed tasks) or `false` (for incomplete tasks). 
 * Tasks matching all keywords will be returned (i.e. AND search). 
   * e.g. `find d/Math Quiz` will return only `Math Quiz` and `Math Quiz 8`. 
     It will not return `Math Assignment` or `GEQ Quiz`.

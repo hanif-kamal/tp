@@ -92,32 +92,44 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2122S1-CS2103T-W15-2/tp/blob/master/src/main/java/dash/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
-<img src="images/LogicClassDiagram.png" width="550"/>
+<img src="diagrams/LogicClassDiagram.png" width="550"/>
 
 How the `Logic` component works:
-1. When `Logic` is called upon to execute a command, it uses the `AddressBookParser` class to parse the user command.
-1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `AddCommand`) which is executed by the `LogicManager`.
+1. When `Logic` is called upon to execute a command, it uses the respective tab parser to parse the command
+   - `ContactsTabParser` while on the contacts tab
+   - `TaskTabParser` while on the tasks tab
+   - `HelpTabParser` while on the help tab
+1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `AddPersonCommand`) which is executed by the `LogicManager`.
 1. The command can communicate with the `Model` when it is executed (e.g. to add a person).
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
-The Sequence Diagram below illustrates the interactions within the `Logic` component for the `execute("delete 1")` API call.
+The Sequence Diagram below illustrates the interactions within the `Logic` component for the `execute("delete 1")` API 
+call while on the contacts tab.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `delete 1` Command](diagrams/DeleteSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteTaskCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
-<img src="images/ParserClasses.png" width="600"/>
+<img src="diagrams/ParserClasses.png" width="600"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
-* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+* When called upon to parse a user command, the relevant tab parser (e.g. `ContactsTabParser`) class creates an `XYZCommandParser` 
+  (`XYZ` is a placeholder for the specific command name e.g., `AddTaskCommandParser`) which uses the other classes shown 
+  above to parse the user command and create a `XYZCommand` object (e.g., `AddTaskCommand`) which the tab parser returns back as a `Command` object.
+* All `XYZCommandParser` classes (e.g., `AddTaskCommandParser`, `DeleteTaskCommandParser`, ...) inherit from the `Parser` 
+  interface so that they can be treated similarly where possible e.g, during testing.
+* Some parsers require the use of the filtered person list, and they extend `ParserRequiringPersonList` instead.
+
+Here are the remaining classes in logic, mainly utility classes:  
+![Parser Utility Classes](diagrams/ParserUtilityClasses.png)
+
 
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2122S1-CS2103T-W15-2/tp/blob/master/src/main/java/dash/model/Model.java)
@@ -661,18 +673,22 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy into an empty folder.
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   2. Double-click the jar file. <br>
+      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-1. Saving window preferences
+2. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+   2. Re-launch the app by double-clicking the jar file.<br>
+      Expected: The most recent window size and location is retained.
 
-1. _{ more test cases … }_
+3. _Shutting down Dash_
+
+    1. Test case: `exit` <br>
+       Expected: Application shuts down. It needs to be launched again to re-open.
 
 ### Deleting a person
 
@@ -680,21 +696,250 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   2. Test case: `delete 1`<br>
+      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   3. Test case: `delete 0`<br>
+      Expected: No person is deleted. Error details shown in the status message.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   4. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases … }_
+2. Deleting a person while no person is being shown
+
+   1. Prerequisites: List all persons using the `list` command. No person in the list.
+
+   2. Test case: `delete 1`<br>
+      Expected: No person is deleted. Error details shown in status message. 
+
+   3. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+      Expected: Similar to previous.
+   
+### Adding a task
+
+1. Adding a task with correct format
+
+   1. Prerequisites: Go to task tab using the `tasks` command.
+   
+   2. Test case: `add d/Test Task dt/21/10/2021, 1900 t/Important`<br>
+      Expected: A task with the given details is added on the GUI of task tab. Details of added task shown in the status message.
+
+2. Adding a task with incorrect formats of description, date/time, person or tag
+    
+    1. Prerequisites: Go to task tab using the `tasks` command.
+
+    2. Test case: `add Test Task`<br>
+       Expected: No task is added. Error details stating 'Invalid command format!' is shown.
+   
+    3. Test case: `add d/` <br>
+       Expected: No task is added. Error details stating 'Task descriptions should not be blank.' is shown.
+
+    4. Test case: `add d/Test Task dt/19:00`<br>
+       Expected: No task is added. Error details stating how Date/Time format works is shown.
+   
+    5. Test case: `add d/Test Task p/0`<br>
+       Expected: No task is added. Error details stating 'Index is not a non-zero unsigned integer' is shown.
+    
+    6. Test case: `add d/Test Task t/an extremely long tag`<br>
+       Expected: No task is added. Error details stating how Tag names should be alphanumeric and limited to 15 characters is shown.
+
+### Editing a task
+
+1. Editing a task's description
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+    
+    2. Test case: `edit 1 d/Changed Description`<br>
+       Expected: First task has description changed to the stated description. Details of the new edited task shown in the status message.
+
+    3. Test case: `edit 0 d/Changed Description`<br>
+       Expected: No task has been edited. Error details stating 'Invalid command format!' is shown.
+
+2. Editing a task's date/time
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+    
+    2. Test case: `edit 1 dt/20/10/2021`<br>
+       Expected: First task has Date only changed to the stated Date. Details of the new edited task shown in the status message.
+
+    3. Test case: `edit 1 dt/1900` <br>
+       Expected: If First task has Date and Time or Date only, it has Time only changed to the stated Time. Details of the new edited task shown in the status message.
+       If First task has neither Date nor Time, the stated Time will be added along with current day's Date. 
+
+3. Editing a task's tag
+    
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+
+    2. Test case: `edit 2 t/Test` <br>
+       Expected: Second task has all of its existing tags (even if none) changed to the stated tag. Details of the new edited task shown in the status message. 
+
+    3. Test case: `edit 1 t/` <br>
+       Expected: First task has all of its existing tags removed. Details of the new edited task shown in the status message.
+
+4. Editing a task's assigned person
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list. Multiple assignees in the list at the right-hand side.
+
+    2. Test case: `edit 1 p/1 p/2` <br>
+       Expected: First task has first and second assignees added to the current list of person of the task. Details of the new edited task shown in the status message.
+
+    3. Test case: `edit 1 p/` <br>
+       Expected: No task has been edited. Error details stating 'Arguments cannot be empty' is shown.
+    
+### Tagging a task
+
+1. Tagging a task with one tag
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+    
+    2. Test case: `tag 1 t/Important` <br>
+       Expected: First task has the new tag 'Important' added as a tag in addition to its existing list of tags. If it already has the same existing tag, no additional tag is added.
+       Details of the task with added tag shown in the status message for both cases.
+
+    3. Test case: `tag 0 t/Important` <br>
+        Expected: No task has been added a tag. Error details stating 'invalid command format!' is shown with a description of how to use tag command with proper format.
+
+    4. Test case: `tag 1 t/` <br>
+       Expected: No task has been added a tag. Error details stating 'Arguments cannot be empty' is shown.
+
+2. Tagging a task with multiple tags
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+
+    2. Test case: `tag 1 t/Important t/Assignment` <br>
+       Expected: First task has the new tags 'Important' and 'Assignment added as tags in addition to its existing list of tags. If it already has same existing tags, no additional tag is added.
+       Details of the task with added tag shown in the status message for both cases.
+    
+    3. Test case: `tag 1 t/ t/` <br>
+       Expected: No task has been added a tag. Error details stating 'Arguments cannot be empty' is shown.
+    
+### Assigning people to a task
+
+1. Assigning one person to a task
+    
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list. Multiple assignees in the list at the right-hand side.
+
+    2. Test case: `assign 1 p/1` <br>
+       Expected: First task has the first person under assignees list assigned in addition to its existing list of people. If that person is already assigned, no additional person is assigned.
+       Details of the task with assigned person shown in the status message for both cases.
+
+    3. Test case: `assign 0 p/1` <br>
+       Expected: No task has been assigned a person. Error details stating 'invalid command format!' is shown with a description of how to use assign command with proper format.
+
+2. Assigning multiple people to a task
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list. Multiple assignees in the list at the right-hand side.
+
+    2. Test case: `assign 1 p/1 p/3` <br>
+       Expected: First task has the first and third person under assignees list assigned in addition to its existing list of people. If the people are already assigned, no additional person is assigned.
+       Details of the task with assigned people shown in the status message for both cases.
+
+### Completing a task
+
+1. Completing a task (Note there is currently no way to mark the task as incomplete)
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list, second task is marked completed, first task is not.
+
+    2. Test case: `complete 1` <br>
+       Expected: First task has been marked as completed. Details of task that is just marked completed shown in the status message.
+
+    3. Test case: `complete 0` <br>
+       Expected: No task has been marked as completed. Error details stating 'invalid command format!' is shown with a description of how to use complete command with proper format.
+
+    4. Test case: `complete 3` <br>
+       Expected: Third task has been marked as completed. Details of task that is just marked completed shown in the status message.
+
+       
+### Finding tasks through task description
+
+1. Finding a task containing the stated one word
+
+    1. Prerequisites: Sample data is loaded for the first time without any modification. List all tasks using the `list` command. Multiple tasks in the list.
+
+    2. Test case: `find review` <br>
+       Expected: Task with description "Do PR review" shown as the only task in the task list. Number of task listed shown in status message.
+
+    3. Test case: `find task` <br>
+       Expected: No task shows up on the task list. Number of task listed shown in status message.
+
+2. Finding a task containing multiple words
+
+    1. Prerequisites: Sample data is loaded for the first time without any modification. List all tasks using the `list` command. Multiple tasks in the list.
+
+    2. Test case: `find before friday` <br>
+       Expected: Task with description "ST2334 quiz before Friday" shown as the only task in the list. Number of task listed shown in status message.
+
+    3. Test case: `find with catch` <br>
+       Expected: Task with description "Catch up with ST lectures" shown as the only task in the list. Number of task listed shown in status message.
+    
+### Finding task through searching a specific field
+
+1. Finding a task containing a date/time
+
+   1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+
+   2. Test case: `find dt/1900` <br>
+      Expected: Tasks with 7:00 PM as time shown as tasks in the list. None shown if no matching time. Number of task listed shown in status message.
+
+   3. Test case: `find dt/05/10/2021` <br>
+      Expected: Tasks with 05 Oct 2021 as date shown as tasks in the list. None shown if no matching date. Number of task listed shown in status message.
+
+   4. Test case: `find dt/05/10/2021 dt/1900 dt/2000` <br>
+      Expected: Tasks with 8:00 PM as time shown as tasks in the list. None shown if no matching time of the time stated in second command. Number of task listed shown in status message.
+
+2. Finding a task containing a person
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list. Multiple assignees in the list at the right-hand side.
+    
+    2. Test case: `find p/1` <br>
+       Expected: Tasks assigned with first person in the assignee list shown as tasks in the list. None shown if no matching assignee. Number of task listed shown in status message.
+    
+    3. Test case: `find p/1 p/2` <br>
+       Expected: Tasks assigned with first and second person in the assignee list shown as tasks in the list. None shown if no matching both assignees. Number of task listed shown in status message.
+
+3. Finding a task containing a tag
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+
+    2. Test case: `find t/homework` <br>
+       Expected: Tasks tagged with "homework" shown as tasks in the list. None shown if no matching tag. Number of task listed shown in status message.
+
+    3. Test case: `find t/homework t/assignment`<br>
+       Expected: <to be edited>
+
+### Find all upcoming tasks:
+
+1. Find a task that is upcoming from your current date and time
+
+    1. Prerequisites: List all tasks using the `list` command. Multiple tasks in the list.
+
+    2. Test case: `upcoming` <br>
+       Expected: Incomplete tasks that have Date/Time after the current Date/Time as determined by your PC shown as tasks in the list, sorted by the closest Date/Time
+       to current Date/Time appearing at the top. None shown if no upcoming tasks. Number of task listed shown in status message.
+
+    3. Test case: `upcoming random text` <br>
+       Expected: Same behaviour as above test case.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Prerequisites: Follow steps to launch Dash for the first time.
 
-1. _{ more test cases … }_
+   2. In the empty folder where the jar file is, go to data folder. 
+
+   3. Delete any of the json files in the folder.<br>
+      
+   4. Go back to the folder before and double-click the jar file.<br>
+      Expected: Shows the GUI with a set of sample contacts.
+   
+2. Dealing with corrupted data files
+
+    1. Prerequisites: Follow steps to launch Dash for the first time.
+   
+    2. In the empty folder where the jar file is, go to data folder.
+
+    3. Edit addressbook.json file through the use of a text editor and delete the whole field for "name".
+
+    4. Go back to the folder before and double-click the jar file.<br>
+       Expected: Shows the GUI with empty page of no sample contacts.

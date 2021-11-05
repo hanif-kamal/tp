@@ -2,8 +2,10 @@ package dash.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dash.commons.core.index.Index;
@@ -205,5 +207,17 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code List<String>}.
+     */
+    public static List<String> parseTagList(Collection<String> tags) throws ParseException {
+        requireNonNull(tags);
+        final List<String> tagList = new ArrayList<>();
+        for (String tagName : tags) {
+            tagList.add(parseTag(tagName).tagName);
+        }
+        return tagList;
     }
 }

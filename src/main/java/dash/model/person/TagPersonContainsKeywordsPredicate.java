@@ -22,15 +22,16 @@ public class TagPersonContainsKeywordsPredicate implements Predicate<Person> {
         return keywords.stream()
                 .allMatch(keyword -> {
                     Set<Tag> tagSet = person.getTags();
-                    boolean condition = false;
+                    boolean match = false;
                     for (Tag t : tagSet) {
                         String i = t.tagName;
-                        condition = StringUtil.containsWordIgnoreCase(i, keyword);
+                        boolean condition = StringUtil.containsWordIgnoreCase(i, keyword);
+                        match = condition;
                         if (condition) {
                             break;
                         }
                     }
-                    return condition;
+                    return match;
                 });
     }
 

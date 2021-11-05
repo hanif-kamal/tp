@@ -12,8 +12,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import dash.commons.core.index.Index;
@@ -52,7 +55,7 @@ public class FindTaskCommandParser implements ParserRequiringPersonList<FindTask
         FindTaskDescriptor findTaskDescriptor = new FindTaskDescriptor();
         boolean descPresent = argMultimap.getValue(PREFIX_TASK_DESCRIPTION).isPresent();
         boolean datePresent = argMultimap.getValue(PREFIX_TASK_DATE).isPresent();
-        boolean tagPresent = argMultimap.getValue(PREFIX_TAG).isPresent();
+        boolean tagPresent = parseTagsForFind(argMultimap.getAllValues(PREFIX_TAG)).isPresent();
         boolean personPresent = argMultimap.getValue(PREFIX_PERSON).isPresent();
         boolean completionStatusPresent = argMultimap.getValue(PREFIX_COMPLETION_STATUS).isPresent();
         if (preamble.isEmpty() && !descPresent && !tagPresent && !datePresent && !personPresent
@@ -82,8 +85,7 @@ public class FindTaskCommandParser implements ParserRequiringPersonList<FindTask
             if (argMultimap.getValue(PREFIX_TAG).get().isEmpty()) {
                 throw new ParseException(MESSAGE_ARGUMENT_EMPTY);
             }
-            String[] tagKeywords = argMultimap.getValue(PREFIX_TAG).get().split("\\s+");
-            findTaskDescriptor.setTags(Arrays.asList(tagKeywords));
+            parseTagsForFind(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(findTaskDescriptor::setTags);
         }
         if (personPresent) {
             if (argMultimap.getValue(PREFIX_PERSON).get().isEmpty()) {
@@ -130,6 +132,25 @@ public class FindTaskCommandParser implements ParserRequiringPersonList<FindTask
     @Override
     public FindTaskCommand parse(String userInput) throws ParseException {
         return null;
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
+     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Tag>} containing zero tags.
+     */
+    private Optional<List<String>> parseTagsForFind(Collection<String> tags) throws ParseException {
+        if (tags.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<String> tagList = new ArrayList<>();
+        if (tags.size() == 1 && tags.contains("")) {
+            tagList = Collections.emptyList();
+        } else {
+            tagList.addAll(tags);
+        }
+        return Optional.of(ParserUtil.parseTagList(tagList));
     }
 
 }
