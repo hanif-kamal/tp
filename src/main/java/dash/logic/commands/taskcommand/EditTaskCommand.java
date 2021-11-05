@@ -26,7 +26,7 @@ import dash.model.task.TaskDate;
 import dash.model.task.TaskDescription;
 
 /**
- * Edits the details of an existing task in the address book.
+ * Edits the details of an existing task in the task list.
  */
 public class EditTaskCommand extends Command {
 

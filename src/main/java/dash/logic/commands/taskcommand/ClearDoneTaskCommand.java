@@ -7,6 +7,9 @@ import dash.logic.commands.CommandResult;
 import dash.logic.commands.exceptions.CommandException;
 import dash.model.Model;
 
+/**
+ * Clears all completed tasks from the task permanently.
+ */
 public class ClearDoneTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "cleardone";

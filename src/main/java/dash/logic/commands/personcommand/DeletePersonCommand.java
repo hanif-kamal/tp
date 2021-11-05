@@ -13,7 +13,7 @@ import dash.model.Model;
 import dash.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Deletes a person identified using its index from the address book.
  */
 public class DeletePersonCommand extends Command {
 

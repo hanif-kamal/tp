@@ -17,6 +17,9 @@ import dash.model.Model;
 import dash.model.tag.Tag;
 import dash.model.task.Task;
 
+/**
+ * Adds tags to a task. Multiple tags can be added to a task at once.
+ */
 public class TagTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";

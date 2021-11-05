@@ -8,6 +8,9 @@ import dash.logic.commands.CommandResult;
 import dash.model.Model;
 import dash.model.task.TaskDateAfterCurrentDatePredicate;
 
+/**
+ * Lists all upcoming tasks in the task list, sorted in chronological order.
+ */
 public class UpcomingTaskCommand extends Command {
     public static final String COMMAND_WORD = "upcoming";
 

@@ -13,6 +13,9 @@ import dash.model.Model;
 import dash.model.task.CompletionStatus;
 import dash.model.task.Task;
 
+/**
+ * Sets a task in the task list as completed.
+ */
 public class CompleteTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "complete";

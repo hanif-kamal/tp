@@ -8,6 +8,9 @@ import dash.logic.commands.exceptions.CommandException;
 import dash.model.Model;
 import dash.model.task.TaskList;
 
+/**
+ * Clears all tasks from the task list permanently.
+ */
 public class ClearTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";

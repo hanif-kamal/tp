@@ -18,6 +18,9 @@ import dash.model.Model;
 import dash.model.person.Person;
 import dash.model.tag.Tag;
 
+/**
+ * Adds tags to a person.
+ */
 public class TagPersonCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";

@@ -17,6 +17,9 @@ import dash.model.Model;
 import dash.model.person.Person;
 import dash.model.task.Task;
 
+/**
+ * Assigns people to a task. Multiple people can be assigned to a task at once.
+ */
 public class AssignPeopleCommand extends Command {
 
     public static final String COMMAND_WORD = "assign";

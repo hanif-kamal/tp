@@ -8,7 +8,7 @@ import dash.model.AddressBook;
 import dash.model.Model;
 
 /**
- * Clears the address book.
+ * Clears all persons from the address book permanently.
  */
 public class ClearPeopleCommand extends Command {
 

@@ -7,7 +7,7 @@ import dash.logic.commands.CommandResult;
 import dash.model.Model;
 
 /**
- * Lists all persons in the address book to the user.
+ * Lists all tasks in the task list.
  */
 public class ListTaskCommand extends Command {
 

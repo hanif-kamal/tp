@@ -12,6 +12,9 @@ import dash.logic.commands.exceptions.CommandException;
 import dash.model.Model;
 import dash.model.task.Task;
 
+/**
+ * Adds a task to the task list.
+ */
 public class AddTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
