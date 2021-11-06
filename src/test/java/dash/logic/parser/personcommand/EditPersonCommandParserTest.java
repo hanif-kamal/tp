@@ -23,6 +23,7 @@ public class EditPersonCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditPersonCommand.MESSAGE_USAGE);
 
+
     private EditPersonCommandParser parser = new EditPersonCommandParser();
 
     @Test
@@ -40,10 +41,12 @@ public class EditPersonCommandParserTest {
     @Test
     public void parse_invalidPreamble_failure() {
         // negative index
-        CommandParserTestUtil.assertParseFailure(parser, "-5" + CommandTestUtil.NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
+        CommandParserTestUtil.assertParseFailure(parser,
+                "-5" + CommandTestUtil.NAME_DESC_AMY, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
         // zero index
-        CommandParserTestUtil.assertParseFailure(parser, "0" + CommandTestUtil.NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
+        CommandParserTestUtil.assertParseFailure(parser,
+                "0" + CommandTestUtil.NAME_DESC_AMY, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
         // invalid arguments being parsed as preamble
         CommandParserTestUtil.assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_FORMAT);

@@ -80,4 +80,22 @@ public class TagTaskCommand extends Command {
         return new Task(taskToEdit.getTaskDescription(), taskToEdit.getCompletionStatus(),
                 taskToEdit.getTaskDate(), taskToEdit.getPeople(), updatedTags);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof TagTaskCommand)) {
+            return false;
+        }
+
+        // state check
+        TagTaskCommand e = (TagTaskCommand) other;
+        return index.equals(e.index)
+                && editTaskDescriptor.equals(e.editTaskDescriptor);
+    }
 }

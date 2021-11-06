@@ -25,20 +25,25 @@ import dash.model.task.TaskDescription;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_NON_NUMERIC_INDEX = "Index is not numeric";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
      * trimmed.
      *
-     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     * @throws ParseException if the specified index is not numeric.
+     * @throws NumberFormatException if the specified index is negative, above INT_MAX_VALUE, or is fractional.
      */
-    public static Index parseIndex(String oneBasedIndex) throws ParseException {
+    public static Index parseIndex(String oneBasedIndex) throws ParseException, NumberFormatException {
         String trimmedIndex = oneBasedIndex.trim();
-        if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
+        if (!StringUtil.isNumeric(trimmedIndex)) {
+            throw new ParseException(MESSAGE_NON_NUMERIC_INDEX);
         }
-        return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+        int index = Integer.parseInt(trimmedIndex);
+        if (!(index > 0)) {
+            throw new NumberFormatException();
+        }
+        return Index.fromOneBased(index);
     }
 
     /**
@@ -173,7 +178,8 @@ public class ParserUtil {
      *
      * @throws ParseException if the any given index is invalid.
      */
-    public static Set<Index> parsePersonIndex(Collection<String> personIndices) throws ParseException {
+    public static Set<Index> parsePersonIndex(Collection<String> personIndices)
+            throws ParseException, NumberFormatException {
         requireNonNull(personIndices);
         final Set<Index> indexSet = new HashSet<>();
         for (String index : personIndices) {

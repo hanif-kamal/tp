@@ -12,7 +12,6 @@ import dash.logic.commands.CommandTestUtil;
 import dash.logic.commands.taskcommand.AssignPeopleCommand;
 import dash.logic.commands.taskcommand.EditTaskCommand;
 import dash.logic.parser.CliSyntax;
-import dash.logic.parser.ParserUtil;
 import dash.model.person.Person;
 import dash.testutil.EditTaskDescriptorBuilder;
 import dash.testutil.TypicalIndexes;
@@ -62,17 +61,16 @@ class AssignPeopleCommandParserTest {
     @Test
     public void parse_invalidValue_failure() {
         assertParseFailureWithPersonList(parser, "1" + CommandTestUtil.INVALID_PERSON_INDEX, people,
-                ParserUtil.MESSAGE_INVALID_INDEX); // invalid person index
+                MESSAGE_INVALID_FORMAT); // non-numeric person index
 
         assertParseFailureWithPersonList(parser, "1" + PREFIX_EMPTY + "-1", people,
-                ParserUtil.MESSAGE_INVALID_INDEX); // negative person index
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX); // negative person index
 
         assertParseFailureWithPersonList(parser, "1" + PREFIX_EMPTY, people,
                 Messages.MESSAGE_ARGUMENT_EMPTY); // no person index
 
         assertParseFailureWithPersonList(parser, "1" + PREFIX_EMPTY + "100", people,
-                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + "\n"
-                        + AssignPeopleCommand.MESSAGE_USAGE); // out of range person index
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX); // out of range person index
 
     }
 

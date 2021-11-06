@@ -41,7 +41,14 @@ public class AddTaskCommandParser implements ParserRequiringPersonList<AddTaskCo
                 ArgumentTokenizer.tokenize(args, PREFIX_TASK_DESCRIPTION, PREFIX_TASK_DATE, PREFIX_PERSON, PREFIX_TAG);
         boolean isDescriptionPrefixPresent = argMultimap.getValue(PREFIX_TASK_DESCRIPTION).isPresent();
         boolean isTaskDatePrefixPresent = argMultimap.getValue(PREFIX_TASK_DATE).isPresent();
-        Set<Index> personIndices = ParserUtil.parsePersonIndex(argMultimap.getAllValues(PREFIX_PERSON));
+        Set<Index> personIndices;
+        try {
+            personIndices = ParserUtil.parsePersonIndex(argMultimap.getAllValues(PREFIX_PERSON));
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddTaskCommand.MESSAGE_USAGE));
+        } catch (NumberFormatException nfe) {
+            throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
         Set<Person> people = new HashSet<>();
         TaskDate taskDate;
 
@@ -51,7 +58,7 @@ public class AddTaskCommandParser implements ParserRequiringPersonList<AddTaskCo
         }
         for (Index index : personIndices) {
             if (index.getZeroBased() < 0 || index.getZeroBased() >= filteredPersonList.size()) {
-                throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + "\n" + AddTaskCommand.MESSAGE_USAGE);
+                throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
             }
             people.add(filteredPersonList.get(index.getZeroBased()));
         }

@@ -1,6 +1,7 @@
 package dash.logic.parser.taskcommand;
 
 import static dash.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static dash.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 
 import dash.commons.core.index.Index;
 import dash.logic.commands.taskcommand.DeleteTaskCommand;
@@ -27,6 +28,8 @@ public class DeleteTaskCommandParser implements Parser<DeleteTaskCommand> {
         } catch (ParseException pe) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteTaskCommand.MESSAGE_USAGE), pe);
+        } catch (NumberFormatException nfe) {
+            throw new ParseException(MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
     }
 }

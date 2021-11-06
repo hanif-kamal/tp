@@ -2,6 +2,7 @@ package dash.logic.parser.taskcommand;
 
 import static dash.commons.core.Messages.MESSAGE_ARGUMENT_EMPTY;
 import static dash.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static dash.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 import static dash.logic.parser.CliSyntax.PREFIX_TAG;
 import static java.util.Objects.requireNonNull;
 
@@ -41,6 +42,8 @@ public class TagTaskCommandParser implements Parser<TagTaskCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     TagTaskCommand.MESSAGE_USAGE),
                     pe);
+        } catch (NumberFormatException nfe) {
+            throw new ParseException(MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
 
         EditTaskDescriptor editTaskDescriptor = new EditTaskDescriptor();

@@ -1,6 +1,5 @@
 package dash.logic.parser;
 
-import static dash.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,9 +46,19 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseIndex_outOfRangeInput_throwsParseException() {
-        Assert.assertThrows(ParseException.class,
-                MESSAGE_INVALID_INDEX, () -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+    public void parseIndex_outOfRangeInput_throwsNumberFormatException() {
+        Assert.assertThrows(NumberFormatException.class, () -> ParserUtil.parseIndex(Long.toString(Long.MAX_VALUE)));
+    }
+
+    @Test
+    public void parseIndex_nonPositive_throwsNumberFormatException() {
+        Assert.assertThrows(NumberFormatException.class, () -> ParserUtil.parseIndex("0"));
+        Assert.assertThrows(NumberFormatException.class, () -> ParserUtil.parseIndex("-1"));
+    }
+
+    @Test
+    public void parseIndex_fractional_throwsNumberFormatException() {
+        Assert.assertThrows(NumberFormatException.class, () -> ParserUtil.parseIndex("2.5"));
     }
 
     @Test

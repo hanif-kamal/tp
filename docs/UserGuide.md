@@ -32,15 +32,11 @@ Whether you're using Windows or macOS, the steps for installation are the same.
 2. Download the latest `dash.jar` from [this website](https://github.com/AY2122S1-CS2103T-W15-2/tp/releases/tag/v1.3.1).
 
 3. Copy the file to the folder you want to use as the _home folder_ for Dash, which is where your data is stored.
+   -  _We suggest creating a folder called "Dash" and putting the `dash.jar` file inside it. You can place this folder 
+      wherever you want. Next, we recommend that you create a shortcut for Dash by right-clicking on the `dash.jar` 
+      file. On Windows, click on the `Create Shortcut` option while on macOS, click on `Make Alias`. You can then put 
+      this shortcut in a convenient place (such as your Desktop) for easy access._
 
-<div markdown="block" class="alert alert-info">
-
-:bulb: We suggest creating a folder called "Dash" and putting the `dash.jar` file inside it. You can place this 
-folder wherever you want. Next, we recommend that you create a shortcut for Dash by right-clicking on the `dash.jar` 
-file. On Windows, click on the `Create Shortcut` option while on macOS, click on `Make Alias`. You can then put this 
-shortcut in a convenient place (such as your Desktop) for easy access.
-
-</div>
 
 4. Double-click the file to start the app. Here's what you should see in a few seconds:<br>
    ![Ui](images/UG-00.png)
@@ -114,7 +110,7 @@ you a lot of time!
 
 </div>
 
-6. Refer to the [Features](#features) below for details of each command.
+Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -124,6 +120,9 @@ you a lot of time!
 
 <a name="command-format-info"></a>
 **:information_source: Notes about the command format:**<br>
+
+* Command words (like `add`, `find`, `help`, etc.) are always lowercase and are case-sensitive.
+  e.g. `Help` will not be understood by Dash, but `help` will. 
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
@@ -465,6 +464,7 @@ by 23:59".
 :scroll: Notes:
 
 * Assigns people, specified with `PERSON_INDEX`, to the task at the specified `INDEX`.
+  * At least one person must be provided.
   * You can assign multiple people to the same task at once.
   * The `INDEX` refers to the position of the task in the displayed task list as indicated by the number next to its 
     description.

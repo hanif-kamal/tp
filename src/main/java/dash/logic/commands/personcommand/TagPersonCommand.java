@@ -82,4 +82,22 @@ public class TagPersonCommand extends Command {
         return new Person(personToEdit.getName(), personToEdit.getPhone(),
                 personToEdit.getEmail(), personToEdit.getAddress(), Collections.unmodifiableSet(updatedTags));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof TagPersonCommand)) {
+            return false;
+        }
+
+        // state check
+        TagPersonCommand e = (TagPersonCommand) other;
+        return index.equals(e.index)
+                && editPersonDescriptor.equals(e.editPersonDescriptor);
+    }
 }

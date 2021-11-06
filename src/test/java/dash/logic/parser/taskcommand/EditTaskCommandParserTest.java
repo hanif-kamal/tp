@@ -46,11 +46,11 @@ class EditTaskCommandParserTest {
     public void parse_invalidPreamble_failure() {
         // negative index
         assertParseFailureWithPersonList(parser, "-5" + CommandTestUtil.TASK_DESC_ASSIGNMENT, people,
-                MESSAGE_INVALID_FORMAT);
+                Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
 
         // zero index
         assertParseFailureWithPersonList(parser, "0" + CommandTestUtil.TASK_DESC_ASSIGNMENT, people,
-                MESSAGE_INVALID_FORMAT);
+                Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
 
         // invalid arguments being parsed as preamble
         assertParseFailureWithPersonList(parser, "1 some random string", people, MESSAGE_INVALID_FORMAT);

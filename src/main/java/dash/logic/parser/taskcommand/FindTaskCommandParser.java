@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import dash.commons.core.index.Index;
+import dash.logic.commands.taskcommand.AssignPeopleCommand;
 import dash.logic.commands.taskcommand.FindTaskCommand;
 import dash.logic.commands.taskcommand.FindTaskCommand.FindTaskDescriptor;
 import dash.logic.parser.ArgumentMultimap;
@@ -91,22 +92,22 @@ public class FindTaskCommandParser implements ParserRequiringPersonList<FindTask
             if (argMultimap.getValue(PREFIX_PERSON).get().isEmpty()) {
                 throw new ParseException(MESSAGE_ARGUMENT_EMPTY);
             }
-            try {
-                index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_PERSON).get());
-            } catch (ParseException pe) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                        FindTaskCommand.MESSAGE_USAGE),
-                        pe);
-            }
-
             List<String> personKeywords = new ArrayList<>();
             if (argMultimap.getValue(PREFIX_PERSON).isPresent()) {
-                Set<Index> personIndices = ParserUtil.parsePersonIndex(argMultimap.getAllValues(PREFIX_PERSON));
+                Set<Index> personIndices;
+                try {
+                    personIndices = ParserUtil.parsePersonIndex(argMultimap.getAllValues(PREFIX_PERSON));
+                } catch (ParseException pe) {
+                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                            AssignPeopleCommand.MESSAGE_USAGE),
+                            pe);
+                } catch (NumberFormatException nfe) {
+                    throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+                }
                 Set<String> peopleNames = new HashSet<>();
                 for (Index i : personIndices) {
                     if (i.getZeroBased() < 0 || i.getZeroBased() >= filteredPersonList.size()) {
-                        throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + "\n"
-                                + FindTaskCommand.MESSAGE_USAGE);
+                        throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
                     }
                     Person person = (filteredPersonList.get(i.getZeroBased()));
                     peopleNames.add(person.getName().fullName);

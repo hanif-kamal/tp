@@ -3,6 +3,7 @@ package dash.logic.parser.taskcommand;
 import static dash.commons.core.Messages.MESSAGE_ARGUMENT_EMPTY;
 import static dash.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static dash.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+import static dash.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 import static dash.logic.parser.CliSyntax.PREFIX_PERSON;
 import static java.util.Objects.requireNonNull;
 
@@ -40,6 +41,8 @@ public class AssignPeopleCommandParser implements ParserRequiringPersonList<Assi
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AssignPeopleCommand.MESSAGE_USAGE),
                     pe);
+        } catch (NumberFormatException nfe) {
+            throw new ParseException(MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
 
         EditTaskDescriptor editTaskDescriptor = new EditTaskDescriptor();
@@ -48,12 +51,20 @@ public class AssignPeopleCommandParser implements ParserRequiringPersonList<Assi
             if (argMultimap.getValue(PREFIX_PERSON).get().isEmpty()) {
                 throw new ParseException(MESSAGE_ARGUMENT_EMPTY);
             }
-            Set<Index> personIndices = ParserUtil.parsePersonIndex(argMultimap.getAllValues(PREFIX_PERSON));
+            Set<Index> personIndices;
+            try {
+                personIndices = ParserUtil.parsePersonIndex(argMultimap.getAllValues(PREFIX_PERSON));
+            } catch (ParseException pe) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        AssignPeopleCommand.MESSAGE_USAGE),
+                        pe);
+            } catch (NumberFormatException nfe) {
+                throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            }
             Set<Person> people = new HashSet<>();
             for (Index i : personIndices) {
                 if (i.getZeroBased() < 0 || i.getZeroBased() >= filteredPersonList.size()) {
-                    throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + "\n"
-                            + AssignPeopleCommand.MESSAGE_USAGE);
+                    throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
                 }
                 people.add(filteredPersonList.get(i.getZeroBased()));
             }
